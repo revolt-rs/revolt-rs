@@ -1,0 +1,12 @@
+[package]
+name = "revolt-rs-http"
+version = "0.0.1"
+edition = "2021"
+description = "An API wrapper for Revolt, built in Rust."
+documentation = "https://docs.rs/revolt-rs"
+keywords = ["revolt", "api", "revoltrs", "revolt-rs"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/revolt-rs/revolt-rs"
+
+[dependencies]

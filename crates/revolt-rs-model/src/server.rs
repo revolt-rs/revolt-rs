@@ -1,6 +1,5 @@
 use chrono::{DateTime, FixedOffset};
 use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use super::attachment::File;
 

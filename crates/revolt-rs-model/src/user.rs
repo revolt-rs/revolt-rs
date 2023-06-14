@@ -4,6 +4,7 @@ use validator::Validate;
 
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
+#[allow(clippy::module_name_repetitions)]
 pub struct UserProfile {
     /// The user's content on their profile. (Bio)
     pub content: Option<String>,
@@ -11,10 +12,13 @@ pub struct UserProfile {
     pub wallpaper: Option<File>,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, PartialOrd, Ord, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, PartialOrd, Ord, Serialize, Default,
+)]
 #[non_exhaustive]
 pub enum Presence {
     /// User is online.
+    #[default]
     Online,
     /// User is not currently available.
     Idle,
@@ -26,26 +30,20 @@ pub enum Presence {
     Invisible,
 }
 
-impl Presence {
-    #[must_use]
-    pub fn name(&self) -> &str {
-        match *self {
-            Presence::Online => "Online",
-            Presence::Idle => "Idle",
-            Presence::Focus => "Focus",
-            Presence::Busy => "Busy",
-            Presence::Invisible => "Invisible",
-        }
+impl std::fmt::Display for Presence {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let formatted = match *self {
+            Self::Online => "Online",
+            Self::Idle => "Idle",
+            Self::Focus => "Focus",
+            Self::Busy => "Busy",
+            Self::Invisible => "Invisible",
+        };
+        f.write_str(formatted)
     }
 }
 
-impl Default for Presence {
-    fn default() -> Presence {
-        Presence::Online
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum RelationshipStatus {
     None,
     User,
@@ -64,6 +62,7 @@ pub struct Relationship {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Validate, Default)]
+#[allow(clippy::module_name_repetitions)]
 pub struct UserStatus {
     /// Custom status text
     #[validate(length(min = 1, max = 128))]
@@ -75,38 +74,38 @@ pub struct UserStatus {
 #[repr(i32)]
 pub enum Badges {
     /// Revolt Developer
-    Developer = 1,
+    Developer = 0b1 << 1,
     /// Helped translate Revolt
-    Translator = 2,
+    Translator = 0b1 << 2,
     /// Monetarily supported Revolt
-    Supporter = 4,
+    Supporter = 0b1 << 3,
     /// Responsibly disclosed a security issue
-    ResponsibleDisclosure = 8,
+    ResponsibleDisclosure = 0b1 << 4,
     /// Revolt Founder
-    Founder = 16,
+    Founder = 0b1 << 5,
     /// Platform moderator
-    PlatformModeration = 32,
+    PlatformModeration = 0b1 << 6,
     /// Active monetary supporter
-    ActiveSupporter = 64,
+    ActiveSupporter = 0b1 << 7,
     /// 🦊🦝
-    Paw = 128,
+    Paw = 0b1 << 8,
     /// Joined as one of the first 1000 users in 2021
-    EarlyAdopter = 256,
+    EarlyAdopter = 0b1 << 9,
     /// Amogus
-    ReservedRelevantJokeBadge1 = 512,
+    ReservedRelevantJokeBadge1 = 0b1 << 10,
     /// Low resolution troll face
-    ReservedRelevantJokeBadge2 = 1024,
+    ReservedRelevantJokeBadge2 = 0b1 << 11,
 }
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
 #[repr(i32)]
 pub enum Flags {
     /// User has been suspended from the platform
-    Suspended = 1,
+    Suspended = 0b1 << 1,
     /// User has deleted their account
-    Deleted = 2,
+    Deleted = 0b1 << 2,
     /// User was banned off the platform
-    Banned = 4,
+    Banned = 0b1 << 3,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -148,7 +147,8 @@ pub struct User {
     pub online: Option<bool>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
+#[allow(clippy::module_name_repetitions)]
 pub enum FieldsUser {
     Avatar,
     StatusText,
@@ -157,8 +157,11 @@ pub enum FieldsUser {
     ProfileBackground,
 }
 
+#[derive(Debug, Default, Hash, PartialEq, Eq)]
+#[allow(clippy::module_name_repetitions)]
 pub enum UserHint {
     /// Could be either a user or a bot
+    #[default]
     Any,
     /// Only match bots
     Bot,
@@ -174,21 +177,26 @@ impl User {
     }
     #[inline]
     #[must_use]
-    pub fn discriminator(&self) -> u16 {
-        discriminator(self.discriminator)
-    } 
+    pub fn mention(&self) -> String {
+        user_mention(&self.id)
+    }
+    #[inline]
+    #[must_use]
+    pub fn discriminator(&self) -> String {
+        discriminator_display(self.discriminator)
+    }
 }
 
 impl Default for User {
     /// Initializes a [`User`] with default values. Setting the following:
-    /// - **id** to `UserId(210)`
-    /// - **avatar** to `Some("abc")`
-    /// - **bot** to `true`.
-    /// - **discriminator** to `1337`.
-    /// - **name** to `"test"`.
-    /// - **public_flags** to [`None`].
+    /// - **[`Self::id`]** to `UserId(210)`
+    /// - **[`Self::avatar`]** to `Some("abc")`
+    /// - **[`Self::bot`]** to `true`.
+    /// - **[`Self::discriminator`]** to `1337`.
+    /// - **[`Self::name`]** to `"test"`.
+    /// - **[`Self::public_flags`]** to [`None`].
     fn default() -> Self {
-        User {
+        Self {
             id: "01EZMT96C3YJ7T2NN996T8VXJE".to_string(),
             username: "kyle".to_string(),
             avatar: None,
@@ -208,9 +216,24 @@ impl Default for User {
 }
 
 fn tag(name: &str, discriminator: u16) -> String {
-    return format!("{}#{}", name, discriminator);
+    format!("{}#{}", name, discriminator_display(discriminator))
 }
 
-fn discriminator(discriminator: u16) -> u16 {
-    return discriminator;
+fn discriminator_display(discriminator: u16) -> String {
+    format!("{discriminator:0>4?}")
+}
+
+fn user_mention(id: impl std::fmt::Display) -> String {
+    format!("<@{id}>")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    pub fn discriminator_display_correctness() {
+        assert_eq!("0000", discriminator_display(0));
+        assert_eq!("0001", discriminator_display(1));
+        assert_eq!("2484", discriminator_display(2484));
+    }
 }
