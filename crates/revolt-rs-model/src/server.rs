@@ -29,9 +29,7 @@ pub struct Member {
 }
 
 /// ServerBan : Representation of a server ban on Revolt
-
-
-
+/// 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ServerBan {
     #[serde(rename = "_id")]

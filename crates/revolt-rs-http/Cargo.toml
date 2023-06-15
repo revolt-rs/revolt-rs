@@ -10,3 +10,12 @@ readme = "README.md"
 repository = "https://github.com/revolt-rs/revolt-rs"
 
 [dependencies]
+hyper = { version = "0.14.26", default-features = false, features = ["client", "http1", "http2", "runtime"] }
+hyper-rustls = { version = "0.24.0", default-features = false, optional = true, features = ["http1", "http2"] }
+serde = { version = "1.0.164", default-features = false, features = ["derive"] }
+serde_json = { version = "1.0.96", default-features = false, features = ["std"] }
+tokio = { version = "1.28.2", default-features = false, features = ["sync", "time"] }
+tracing = { version = "0.1.37", default-features = false, features = ["std", "attributes"] }
+
+[dev-dependencies]
+static_assertions = { version = "1.1.0", default-features = false }

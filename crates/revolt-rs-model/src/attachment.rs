@@ -34,12 +34,10 @@ pub struct File {
     pub content_type: String,
     /// Size of this file (in bytes)
     pub size: isize,
-
     /// Whether this file was deleted
     pub deleted: Option<bool>,
     /// Whether this file was reported
     pub reported: Option<bool>,
-
     /// Id of the object this file is associated with
     pub object_id: Option<String>,
 }
