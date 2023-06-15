@@ -9,6 +9,7 @@ use super::Client;
 pub struct ClientBuilder {
     pub(crate) default_headers: Option<HeaderMap>,
     pub(super) token: Option<String>,
+    pub(super) is_bot: bool, 
 }
 
 pub enum TokenType {
@@ -31,20 +32,15 @@ impl ClientBuilder {
         Client {
             default_headers: self.default_headers,
             token: self.token,
+            is_bot: self.is_bot, 
         }
     }
 
-    pub fn token(self, token: String, token_type: TokenType) -> Self {
-        let mut headers = HeaderMap::new();
-
-        match token_type {
-            TokenType::User => {
-                headers.insert("x-session-token", HeaderValue::from_str(&token).unwrap());
-            },
-            TokenType::Bot => {
-                headers.insert("x-bot-token", HeaderValue::from_str(&token).unwrap());
-            }
-        }
+    pub fn token(self, token: String, is_bot: bool) -> Self {
+        let is_bot = match is_bot {
+            true => "x-bot-token",
+            false => "x-session-token"
+        };
 
         self
     }
@@ -56,6 +52,7 @@ impl Default for ClientBuilder {
         Self {
             token: None,
             default_headers: None,
+            is_bot: true
         }
     }
 }

@@ -1,24 +1,20 @@
+use futures_util::SinkExt;
 use serde::Serialize;
-
-use {
-    futures_util::{SinkExt, StreamExt},
-    std::time::{Duration, Instant},
-    tokio::net::TcpStream,
-    tokio_tungstenite::{connect_async, tungstenite::Message, MaybeTlsStream, WebSocketStream},
-    tracing::info,
-};
-
-#[cfg(not(feature = "msgpack"))]
-const BONFIRE_URL: &str = "wss://ws.revolt.chat";
-#[cfg(feature = "msgpack")]
-const BONFIRE_URL: &str = "wss://ws.revolt.chat/?format=msgpack";
+use std::time::Duration;
+use tokio::net::TcpStream;
+use tokio_tungstenite::{connect_async, tungstenite::Message, MaybeTlsStream, WebSocketStream};
+use tracing::info;
 
 #[derive(Debug)]
 pub struct WebSocketClient {
     stream: WebSocketStream<MaybeTlsStream<TcpStream>>,
     heartbeat_interval: Duration,
-    pong_timeout: Duration,
+    pong_timeout: Duration, 
+    // websocket_domain: String,
+    // token: String,
 }
+
+const BONFIRE_URL: &str = "wss://ws.revolt.chat/?format=msgpack";
 
 // This is temporary while I was testing the websocket connection.
 #[derive(Debug, Serialize, Clone, PartialEq)]
@@ -40,25 +36,26 @@ pub enum Events {
     },
 }
 
+// TOOD: support self-hosted revolt instances.
 impl WebSocketClient {
-    pub async fn connect(&mut self, event: Events) -> Result<Self, ()> {
-        let (stream, _) = connect_async(BONFIRE_URL).await?;
-        let now = Instant::now();
+    pub async fn connect() -> Result<WebSocketClient, Box<dyn std::error::Error + Send + Sync>> {
+        // let _ = self.close().await;
+
+        let (stream, _) = connect_async(BONFIRE_URL)
+            .await
+            .expect("Connection to websocket failed");
 
         Ok(Self {
             stream,
-            heartbeat_interval: Duration::from_secs(0),
-            pong_timeout: Duration::from_secs(0),
+            heartbeat_interval: Duration::from_secs(30),
+            pong_timeout: Duration::from_secs(10),
         })
     }
 
-    pub async fn send(&mut self, event: Events) -> Result<() ,()> {
-        #[cfg(not(feature = "msgpack"))]
-        let msg = Message::Text(serde_json::to_string(&event).unwrap());
-        #[cfg(feature = "msgpack")]
+    pub async fn send(&mut self, event: Events) -> Result<(), ()> {
         let msg = Message::Binary(rmp_serde::to_vec(&event).unwrap());
 
-        self.stream.send(msg).await;
+        let _ = self.stream.send(msg).await;
 
         Ok(())
     }
@@ -66,7 +63,7 @@ impl WebSocketClient {
     pub async fn close(&mut self) -> Result<(), ()> {
         info!(target: "WS", "Closing the connection");
 
-        self.stream.close(None).await;
+        let _ = self.stream.close(None).await;
 
         Ok(())
     }

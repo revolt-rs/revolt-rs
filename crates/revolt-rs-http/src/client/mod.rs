@@ -9,11 +9,12 @@ mod builder;
 pub struct Client {
     default_headers: Option<HeaderMap>,
     token: Option<String>,
+    is_bot: bool, 
 }
 
 impl Client {
-    pub fn new(token: String) -> Self {
-        ClientBuilder::default().token(token, TokenType::Bot).exec()
+    pub fn new(token: String, is_bot: bool) -> Self {
+        ClientBuilder::default().token(token, is_bot).exec()
     }
 
     pub fn builder() -> ClientBuilder {
