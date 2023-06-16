@@ -11,6 +11,15 @@ pub enum GatewayReactionType {
     MessageUnreact,
 }
 
+impl ToString for GatewayReactionType {
+   fn to_string(&self) -> String {
+       match self {
+           Self::MessageReact=> String::from("MessageReact"),
+           Self::MessageUnreact => String::from("MessageUnreact"),
+       }
+   }
+}
+
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct GatewayReaction {
     pub channel_id: Id<ChannelMarker>,

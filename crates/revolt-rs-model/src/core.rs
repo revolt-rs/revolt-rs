@@ -1,4 +1,6 @@
-#[derive(Clone, Hash, PartialEq, Eq, Debug, serde::Deserialize)]
+use serde::Deserialize;
+
+#[derive(Clone, Hash, PartialEq, Eq, Debug, Deserialize)]
 pub struct QueryNodeResponse {
     /// Version of this revolt instance
     #[serde(rename = "revolt")]
@@ -15,7 +17,7 @@ pub struct QueryNodeResponse {
     pub build: QueryNodeBuildInformation,
 }
 
-#[derive(Clone, Hash, PartialEq, Eq, Debug, serde::Deserialize)]
+#[derive(Clone, Hash, PartialEq, Eq, Debug, Deserialize)]
 pub struct QueryNodeFeatures {
     /// If this revolt instance has email verification support
     #[serde(rename = "email")]
@@ -30,7 +32,7 @@ pub struct QueryNodeFeatures {
     pub voso: QueryNodeVoiceServiceConfiguration,
 }
 
-#[derive(Clone, Hash, PartialEq, Eq, Debug, serde::Deserialize)]
+#[derive(Clone, Hash, PartialEq, Eq, Debug, Deserialize)]
 pub struct QueryNodeCaptcha {
     /// If this revolt instance requires a CAPTCHA
     pub enabled: bool,
@@ -38,7 +40,7 @@ pub struct QueryNodeCaptcha {
     pub key: String,
 }
 
-#[derive(Clone, Hash, PartialEq, Eq, Debug, serde::Deserialize)]
+#[derive(Clone, Hash, PartialEq, Eq, Debug, Deserialize)]
 pub struct QueryNodeGenericServiceConfiguration {
     /// If this service is enabled for this instance
     pub enabled: bool,
@@ -46,7 +48,7 @@ pub struct QueryNodeGenericServiceConfiguration {
     pub url: String,
 }
 
-#[derive(Clone, Hash, PartialEq, Eq, Debug, serde::Deserialize)]
+#[derive(Clone, Hash, PartialEq, Eq, Debug, Deserialize)]
 pub struct QueryNodeVoiceServiceConfiguration {
     /// If this service is enabled for this instance
     pub enabled: bool,
@@ -56,7 +58,7 @@ pub struct QueryNodeVoiceServiceConfiguration {
     pub ws: String,
 }
 
-#[derive(Clone, Hash, PartialEq, Eq, Debug, serde::Deserialize)]
+#[derive(Clone, Hash, PartialEq, Eq, Debug, Deserialize)]
 pub struct QueryNodeBuildInformation {
     /// If this revolt instance has email verification support
     #[serde(rename = "email")]

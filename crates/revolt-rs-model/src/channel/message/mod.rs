@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use self::{interactions::Interactions, masquerade::Masquerade};
+use self::{interactions::Interactions, masquerade::Masquerade, embed::SendableEmbed};
 
 pub mod embed;
 pub mod interactions;
@@ -24,7 +24,7 @@ pub struct MessageSend {
     pub replies: Option<Option<Vec<crate::models::Reply>>>,
     /// Embeds to include in message  Text embed content contributes to the content length cap
     #[serde(rename = "embeds", default, skip_serializing_if = "Option::is_none")]
-    pub embeds: Option<Option<Vec<crate::models::SendableEmbed>>>,
+    pub embeds: Option<Option<Vec<SendableEmbed>>>,
     #[serde(rename = "masquerade", default, skip_serializing_if = "Option::is_none")]
     pub masquerade: Option<Option<Box<Masquerade>>>,
     #[serde(rename = "interactions", default, skip_serializing_if = "Option::is_none")]
