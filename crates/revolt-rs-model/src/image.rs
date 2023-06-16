@@ -22,7 +22,6 @@ pub enum ImageSize {
     Large,
     #[serde(rename = "Preview")]
     Preview,
-
 }
 
 impl ToString for ImageSize {
