@@ -13,3 +13,4 @@ repository = "https://github.com/revolt-rs/revolt-rs"
 serde = { version = "1", features = ["derive"] }
 validator = { version = "0.16", features = ["derive"] }
 chrono = { version = "0.4", features = ["serde"] }
+non-empty-string = { version = "0.2.3", features = ["serde"] }

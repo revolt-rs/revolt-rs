@@ -1,6 +1,6 @@
 use hyper::HeaderMap;
 
-use self::builder::{ClientBuilder, TokenType};
+use self::builder::ClientBuilder;
 
 mod builder;
 
@@ -9,7 +9,7 @@ mod builder;
 pub struct Client {
     default_headers: Option<HeaderMap>,
     token: Option<String>,
-    is_bot: bool, 
+    is_bot: bool,
 }
 
 impl Client {

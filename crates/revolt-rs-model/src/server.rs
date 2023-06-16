@@ -51,7 +51,7 @@ pub struct ServerBanner {
     #[serde(rename = "filename")]
     pub filename: String,
     #[serde(rename = "metadata")]
-    pub metadata: Box<crate::models::FileMetadata>,
+    pub metadata: Box<crate::attachment::Metadata>,
     /// Raw content type of this file
     #[serde(rename = "content_type")]
     pub content_type: String,

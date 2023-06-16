@@ -1,3 +1,5 @@
+use non_empty_string::NonEmptyString;
+
 #[derive(Clone, Hash, Debug, PartialEq, Eq)]
 pub struct Id<T: Marker> {
     phantom: core::marker::PhantomData<T>,
@@ -11,6 +13,24 @@ impl<T: Marker> std::fmt::Display for Id<T> {
 }
 
 impl<T: Marker> Id<T> {
+    const fn from_string(inner: String) -> Self {
+        Self {
+            phantom: core::marker::PhantomData,
+            inner,
+        }
+    }
+
+    #[track_caller]
+    pub fn new(value: &str) -> Self {
+        // if let Some(value) = NonEmptyString::new(value.to_string()) {
+        //     Some(Self::from_string(value.to_string()))
+        // } else {
+        //     None
+        // } 
+
+        return Self::from_string(String::from(value.to_string()));
+    }
+
     #[must_use]
     pub fn get(&self) -> &str {
         &self.inner
@@ -23,7 +43,7 @@ pub trait Marker {}
 pub struct GenericMarker;
 impl Marker for GenericMarker {}
 
-#[derive(Clone, Copy, Hash, Debug, Default)]
+#[derive(Clone, Copy, Hash, Debug, Default, PartialEq)]
 pub struct UserMarker;
 impl Marker for UserMarker {}
 
@@ -31,7 +51,7 @@ impl Marker for UserMarker {}
 pub struct ServerMarker;
 impl Marker for ServerMarker {}
 
-#[derive(Clone, Copy, Hash, Debug, Default)]
+#[derive(Clone, Copy, Hash, Debug, Default, PartialEq)]
 pub struct ChannelMarker;
 impl Marker for ChannelMarker {}
 
@@ -46,6 +66,10 @@ impl Marker for ReportMarker {}
 #[derive(Clone, Copy, Hash, Debug, Default)]
 pub struct StrikeMarker;
 impl Marker for StrikeMarker {}
+
+#[derive(Clone, Copy, Hash, Debug, Default, PartialEq)]
+pub struct EmojiMarker;
+impl Marker for EmojiMarker {}
 
 #[derive(Clone, Copy, Hash, Debug, Default)]
 pub struct SessionMarker;

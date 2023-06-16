@@ -1,3 +1,4 @@
+pub mod channel;
 pub mod attachment;
 pub mod core;
 pub mod gateway;

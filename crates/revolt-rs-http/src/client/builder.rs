@@ -12,11 +12,6 @@ pub struct ClientBuilder {
     pub(super) is_bot: bool, 
 }
 
-pub enum TokenType {
-    User,
-    Bot
-}
-
 impl ClientBuilder {
     /// Create a new builder to create a [`Client`].
     pub fn new() -> Self {
