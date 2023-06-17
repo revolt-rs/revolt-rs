@@ -16,7 +16,6 @@ pub enum ChannelType {
     Text,
     #[serde(rename = "Voice")]
     Voice,
-
 }
 
 impl ToString for ChannelType {

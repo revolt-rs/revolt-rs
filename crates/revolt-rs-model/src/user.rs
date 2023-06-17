@@ -131,7 +131,7 @@ pub struct User {
     pub display_name: String,
     /// Avatar attachment
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub avatar: Option<String>,
+    pub avatar: Option<File>,
     /// Relationships with other users
     #[serde(skip_serializing_if = "Option::is_none")] 
     pub relations: Option<Vec<Relationship>>,

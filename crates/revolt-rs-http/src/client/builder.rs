@@ -22,8 +22,6 @@ impl ClientBuilder {
     pub fn exec(self) -> Client {
         // TODO: establish a connection to the gateway.
 
-        event!(Level::DEBUG, "Something has happened!");
-
         Client {
             default_headers: self.default_headers,
             token: self.token,
