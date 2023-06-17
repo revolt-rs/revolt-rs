@@ -2,11 +2,13 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
+use super::{ChannelIcon, OverrideField};
+
 fn is_false(b: &bool) -> bool {
     *b == false
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 #[serde(tag = "channel_type")]
 /// Representation of the available channels on Revolt
@@ -26,7 +28,7 @@ pub enum ChannelType {
         description: Option<Option<String>>,
         #[serde(skip_serializing_if = "Option::is_none")]
         /// Icon attachment
-        icon: Option<Option<Box<crate::models::ChannelOneOf2Icon>>>, 
+        icon: Option<Option<Box<ChannelIcon>>>, 
         /// Id of the last message sent in this channel
         #[serde(rename = "last_message_id", skip_serializing_if = "Option::is_none")]
         last_message_id: Option<String>,
