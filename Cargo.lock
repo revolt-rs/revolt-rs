@@ -129,6 +129,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2e66c9d817f1720209181c316d28635c050fa304f9c79e47a520882661b7308"
 
 [[package]]
+name = "delegate"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "082a24a9967533dc5d743c602157637116fc1b52806d694a5a45e6f32567fcdd"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -428,6 +439,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "non-empty-string"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bb438f1eb418cb32cdf63f67ce050d821354faaea45a0869f707a9eeaccaea7a"
+dependencies = [
+ "delegate",
+ "serde",
+]
+
+[[package]]
 name = "num-traits"
 version = "0.2.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -604,6 +625,7 @@ name = "revolt-rs-model"
 version = "0.0.1"
 dependencies = [
  "chrono",
+ "non-empty-string",
  "serde",
  "validator",
 ]
