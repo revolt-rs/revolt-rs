@@ -2,10 +2,10 @@
 name = "revolt-rs-http"
 version = "0.0.1"
 edition = "2021"
-description = "An API wrapper for Revolt, built in Rust."
+description = "Revolt REST API client, for revolt-rs."
 documentation = "https://docs.rs/revolt-rs"
 keywords = ["revolt", "api", "revoltrs", "revolt-rs"]
-license = "MIT"
+license = "ISC"
 readme = "README.md"
 repository = "https://github.com/revolt-rs/revolt-rs"
 

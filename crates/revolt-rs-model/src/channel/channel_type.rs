@@ -2,6 +2,10 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
+fn is_false(b: &bool) -> bool {
+    *b == false
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[non_exhaustive]
 #[serde(tag = "channel_type")]
@@ -29,9 +33,9 @@ pub enum ChannelType {
         #[serde(skip_serializing_if = "Option::is_none")]
         /// Permissions assigned based on role to this channel
         role_permissions: Option<HashMap<String, OverrideField>>,
-        #[serde(skip_serializing_if = "Option::is_none")] 
+        #[serde(skip_serializing_if = "is_false")] 
         /// Whether this channel is marked as not safe for work
-        nsfw: Option<bool>,
+        nsfw: bool,
         
     },
     #[serde(rename = "VoiceChannel")]
