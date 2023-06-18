@@ -1,15 +1,19 @@
-use hyper::{HeaderMap, http::HeaderValue};
-use tracing::{event, Level};
+use std::time::Duration;
 
-use super::Client;
+use hyper::HeaderMap;
+
+use super::{Client, Ratelimit};
 
 /// A builder for [`Client`].
 #[derive(Debug)]
 #[must_use = "This is useless if no Client is present"]
 pub struct ClientBuilder {
     pub(crate) default_headers: Option<HeaderMap>,
+    pub(crate) ratelimit: Option<Ratelimit>,
+    pub(crate) proxy: Option<Box<str>>,
+    pub(crate) http_timeout: Duration,
     pub(super) token: Option<String>,
-    pub(super) is_bot: bool, 
+    pub(super) is_bot: Option<bool>,
 }
 
 impl ClientBuilder {
@@ -24,15 +28,24 @@ impl ClientBuilder {
 
         Client {
             default_headers: self.default_headers,
+            ratelimit: self.ratelimit,
+            proxy: self.proxy,
+            http_timeout: self.http_timeout,
             token: self.token,
-            is_bot: self.is_bot, 
+            is_bot: self.is_bot,
         }
     }
 
-    pub fn token(self, token: String, is_bot: bool) -> Self {
+    pub fn token(mut self, token: String) -> Self {
+        self.token = Some(token);
+        self
+    }
+
+    pub fn is_bot(self, is_bot: Option<bool>) -> Self { 
         let is_bot = match is_bot {
-            true => "x-bot-token",
-            false => "x-session-token"
+            Some(true) => "x-bot-token",
+            Some(false) => "x-session-token",
+            _ => "x-bot-token",
         };
 
         self
@@ -43,9 +56,12 @@ impl Default for ClientBuilder {
     fn default() -> Self {
         #[allow(clippy::box_default)]
         Self {
-            token: None,
             default_headers: None,
-            is_bot: true
+            ratelimit: None,
+            proxy: None,
+            http_timeout: Duration::from_secs(10),
+            token: None,
+            is_bot: Some(true),
         }
     }
 }

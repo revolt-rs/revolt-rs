@@ -17,5 +17,7 @@ serde_json = { version = "1.0.96", default-features = false, features = ["std"] 
 tokio = { version = "1.28.2", default-features = false, features = ["sync", "time"] }
 tracing = { version = "0.1.37", default-features = false, features = ["std", "attributes"] }
 
+revolt-rs-model = { path = "../revolt-rs-model", version = "0.0.1" }
+
 [dev-dependencies]
 static_assertions = { version = "1.1.0", default-features = false }
