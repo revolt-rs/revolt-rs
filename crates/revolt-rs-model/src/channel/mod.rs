@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 pub mod channel_type;
+pub mod category;
 pub mod message;
 pub mod webhook;
 

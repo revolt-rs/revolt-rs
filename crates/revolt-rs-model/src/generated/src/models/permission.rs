@@ -75,7 +75,6 @@ pub enum Permission {
     GrantAllSafe,
     #[serde(rename = "GrantAll")]
     GrantAll,
-
 }
 
 impl ToString for Permission {

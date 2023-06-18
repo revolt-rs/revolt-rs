@@ -203,11 +203,11 @@ impl User {
 impl Default for User {
     /// Initializes a [`User`] with default values. Setting the following:
     /// - **[`Self::id`]** to `UserId(210)`
-    /// - **[`Self::avatar`]** to `Some("abc")`
-    /// - **[`Self::bot`]** to `true`.
+    /// - **[`Self::username`]** to `"test"`. 
     /// - **[`Self::discriminator`]** to `1337`.
-    /// - **[`Self::name`]** to `"test"`.
-    /// - **[`Self::public_flags`]** to [`None`].
+    /// - **[`Self::display_name`]** to `"Kyle"`.
+    /// - **[`Self::privileged`]** to `true`.
+    /// - **[`Self::online`]** to `Some(true)`.
     fn default() -> Self {
         Self {
             id: "01EZMT96C3YJ7T2NN996T8VXJE".to_string(),
