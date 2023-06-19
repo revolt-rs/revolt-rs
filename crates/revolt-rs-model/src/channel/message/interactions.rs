@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::id::{EmojiMarker, Id};
+use crate::id::{ChannelMarker, EmojiMarker, Id, MessageMarker, UserMarker};
 
 #[derive(Clone, Debug, Deserialize, Hash, PartialEq, Serialize)]
 pub enum EmojiId {
@@ -22,10 +22,15 @@ pub enum ReactionType {
 
 #[derive(Clone, Debug, Deserialize, Hash, PartialEq, Serialize)]
 pub struct Reaction {
+    /// Channel identifier.
+    pub channel_id: Id<ChannelMarker>,
     /// Emoji identifier.
-    pub emoji: EmojiId,
+    pub emoji_id: EmojiId,
+    /// Message identifier.
+    pub id: Id<MessageMarker>,
     /// Reaction type.
     pub reaction: ReactionType,
+    pub user_id: Id<UserMarker>,
 }
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
@@ -41,15 +46,29 @@ pub struct Interactions {
 #[cfg(test)]
 mod tests {
     use super::{Reaction, ReactionType};
-    use crate::id::{Id, EmojiMarker};
+    use crate::id::{EmojiMarker, Id};
 
     #[test]
+    fn message_reaction_id() {
+        let reaction = Reaction {
+            channel_id: Id::<super::ChannelMarker>::new("01H388QK3BBH3B3S46X14W84VT"),
+            emoji_id: super::EmojiId::Id {
+                id: Id::<EmojiMarker>::new("01GZYQS64JEW1KTX7K8PPGMVA5"),
+            },
+            id: Id::<super::MessageMarker>::new("01H38MCBB4ETDFMZH2DZ238MG3"),
+            reaction: ReactionType::React,
+            user_id: Id::<super::UserMarker>::new("01H30YN87NZCKGWQXPD5XY8JS8"),
+        };
+    }
     fn message_reaction_unicode() {
         let reaction = Reaction {
-            emoji: super::EmojiId::Id {
-                id: Id::<EmojiMarker>::new("5f6d3d9b9c5b3c0b7c7d0b3a"),
+            channel_id: Id::<super::ChannelMarker>::new("01H388QK3BBH3B3S46X14W84VT"),
+            emoji_id: super::EmojiId::Unicode { 
+                name: "👍".to_string(),
             },
+            id: Id::<super::MessageMarker>::new("01H38MCBB4ETDFMZH2DZ238MG3"),
             reaction: ReactionType::React,
+            user_id: Id::<super::UserMarker>::new("01H30YN87NZCKGWQXPD5XY8JS8"),
         };
     }
 }

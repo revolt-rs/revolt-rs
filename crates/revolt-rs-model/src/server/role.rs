@@ -13,10 +13,7 @@ pub struct RolePermissions {
 impl RolePermissions {
     /// Permissions available to this role
     pub fn new(a: i64, d: i64) -> RolePermissions {
-        RolePermissions {
-            a,
-            d,
-        }
+        RolePermissions { a, d }
     }
 }
 
@@ -36,4 +33,9 @@ pub struct Role {
     /// Ranking of this role
     #[serde(rename = "rank", skip_serializing_if = "Option::is_none")]
     pub rank: Option<i64>,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub enum RoleFields {
+    Colour,
 }

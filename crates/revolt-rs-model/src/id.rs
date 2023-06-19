@@ -47,7 +47,7 @@ impl Marker for GenericMarker {}
 pub struct UserMarker;
 impl Marker for UserMarker {}
 
-#[derive(Clone, Copy, Hash, Debug, Default)]
+#[derive(Clone, Copy, Hash, Debug, Default, PartialEq)]
 pub struct ServerMarker;
 impl Marker for ServerMarker {}
 
@@ -55,7 +55,7 @@ impl Marker for ServerMarker {}
 pub struct ChannelMarker;
 impl Marker for ChannelMarker {}
 
-#[derive(Clone, Copy, Hash, Debug, Default)]
+#[derive(Clone, Copy, Hash, Debug, Default, PartialEq)]
 pub struct MessageMarker;
 impl Marker for MessageMarker {}
 

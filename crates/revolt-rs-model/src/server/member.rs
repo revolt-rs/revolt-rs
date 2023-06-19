@@ -1,10 +1,20 @@
 use chrono::{DateTime, FixedOffset};
 use serde::{Deserialize, Serialize};
 
+use crate::user::User;
+
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct MemberCompositeKey {
     pub server: String,
     pub user: String,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct MemberList {
+    /// List of members
+    pub members: Vec<Member>,
+    /// List of users
+    pub users: Vec<User>,
 }
 
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -23,4 +33,12 @@ pub struct Member {
     pub roles: Vec<String>,
     /// Timestamp when the user was timedout
     pub timeout: Option<DateTime<FixedOffset>>,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub enum MemberFields {
+    Nickname,
+    Avatar,
+    Roles,
+    Timeout,
 }

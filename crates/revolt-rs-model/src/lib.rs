@@ -7,3 +7,4 @@ pub mod gateway;
 pub mod id;
 pub mod server;
 pub mod user;
+pub mod bot;

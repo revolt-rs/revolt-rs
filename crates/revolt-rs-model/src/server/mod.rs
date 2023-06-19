@@ -1,54 +1,72 @@
 use serde::{Deserialize, Serialize};
 
-use crate::id::{Id, UserMarker};
+use crate::channel::category::Category;
 
+use self::{
+    banner::ServerBanner, icon::ServerIcon, role::Role, system_messages::ServerSystemMessages,
+};
+
+pub mod banner;
+pub mod icon;
 pub mod member;
 pub mod role;
 pub mod permissions;
-
-/// ServerBan : Representation of a server ban on Revolt
-/// 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ServerBan {
-    #[serde(rename = "_id")]
-    pub id: Id<UserMarker>,
-    /// Reason for ban creation
-    #[serde(rename = "reason", default, skip_serializing_if = "Option::is_none")]
-    pub reason: Option<String>,
-}
+pub mod bans;
+pub mod system_messages;
+pub mod emoji;
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct ServerBanner {
+pub struct Server {
     /// Unique Id
     #[serde(rename = "_id")]
     pub _id: String,
-    /// Tag / bucket this file was uploaded to
-    #[serde(rename = "tag")]
-    pub tag: String,
-    /// Original filename
-    #[serde(rename = "filename")]
-    pub filename: String,
-    #[serde(rename = "metadata")]
-    pub metadata: Box<crate::attachment::Metadata>,
-    /// Raw content type of this file
-    #[serde(rename = "content_type")]
-    pub content_type: String,
-    /// Size of this file (in bytes)
-    #[serde(rename = "size")]
-    pub size: i32,
-    /// Whether this file was deleted
-    #[serde(rename = "deleted", default, skip_serializing_if = "Option::is_none")]
-    pub deleted: Option<bool>,
-    /// Whether this file was reported
-    #[serde(rename = "reported", default, skip_serializing_if = "Option::is_none")]
-    pub reported: Option<bool>,
-    #[serde(rename = "message_id", default, skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<String>,
-    #[serde(rename = "user_id", default, skip_serializing_if = "Option::is_none")]
-    pub user_id: Option<String>,
-    #[serde(rename = "server_id", default, skip_serializing_if = "Option::is_none")]
-    pub server_id: Option<String>,
-    /// Id of the object this file is associated with
-    #[serde(rename = "object_id", default, skip_serializing_if = "Option::is_none")]
-    pub object_id: Option<String>,
+    /// User id of the owner
+    #[serde(rename = "owner")]
+    pub owner: String,
+    /// Name of the server
+    #[serde(rename = "name")]
+    pub name: String,
+    /// Description for the server
+    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<Option<String>>,
+    /// Channels within this server
+    #[serde(rename = "channels")]
+    pub channels: Vec<String>,
+    /// Categories for this server
+    #[serde(rename = "categories", default, skip_serializing_if = "Option::is_none")]
+    pub categories: Option<Option<Vec<Category>>>,
+    #[serde(rename = "system_messages", default, skip_serializing_if = "Option::is_none")]
+    pub system_messages: Option<Option<Box<ServerSystemMessages>>>,
+    /// Roles for this server
+    #[serde(rename = "roles", skip_serializing_if = "Option::is_none")]
+    pub roles: Option<::std::collections::HashMap<String, Role>>,
+    /// Default set of server and channel permissions
+    #[serde(rename = "default_permissions")]
+    pub default_permissions: i64,
+    #[serde(rename = "icon", default, skip_serializing_if = "Option::is_none")]
+    pub icon: Option<Option<Box<ServerIcon>>>,
+    #[serde(rename = "banner", default, skip_serializing_if = "Option::is_none")]
+    pub banner: Option<Option<Box<ServerBanner>>>,
+    /// Bitfield of server flags
+    #[serde(rename = "flags", default, skip_serializing_if = "Option::is_none")]
+    pub flags: Option<Option<i32>>,
+    /// Whether this server is flagged as not safe for work
+    #[serde(rename = "nsfw", skip_serializing_if = "Option::is_none")]
+    pub nsfw: Option<bool>,
+    /// Whether to enable analytics
+    #[serde(rename = "analytics", skip_serializing_if = "Option::is_none")]
+    pub analytics: Option<bool>,
+    /// Whether this server should be publicly discoverable
+    #[serde(rename = "discoverable", skip_serializing_if = "Option::is_none")]
+    pub discoverable: Option<bool>,
+}
+
+/// Optional fields on server object
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub enum ServerFields {
+    Description,
+    Categories,
+    SystemMessages,
+    Icon,
+    Banner,
 }

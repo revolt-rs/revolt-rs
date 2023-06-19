@@ -1,3 +1,4 @@
+pub mod channel_ack;
 pub mod channel_create;
 pub mod channel_delete;
 pub mod channel_start_typing;
@@ -9,6 +10,7 @@ pub mod message_append;
 pub mod message_update;
 pub mod message_delete;
 pub mod message_react;
+pub mod message_unreact;
 pub mod pong;
 pub mod server_create;
 pub mod server_delete;
@@ -20,3 +22,5 @@ pub mod server_role_delete;
 pub mod server_role_update;
 pub mod user_relationship;
 pub mod user_update;
+pub mod authenticated;
+pub mod ready;
