@@ -124,7 +124,7 @@ pub struct BotInformation {
 pub struct User {
     /// Unique Id
     #[serde(rename = "_id")]
-    pub id: String,
+    pub id: Id<UserMarker>,
     /// Username
     pub username: String,
     /// Discriminator
@@ -214,7 +214,7 @@ impl Default for User {
     /// - **[`Self::online`]** to `Some(true)`.
     fn default() -> Self {
         Self {
-            id: "01EZMT96C3YJ7T2NN996T8VXJE".to_string(),
+            id: Id::new("01EZMT96C3YJ7T2NN996T8VXJE"),
             username: "foo".to_string(),
             avatar: None,
             discriminator: "1337".to_string(),
