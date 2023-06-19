@@ -1,15 +1,12 @@
 use std::time::Duration;
 
-use hyper::HeaderMap;
-use revolt_rs_model::id::{Id, ServerMarker};
-
 use self::builder::ClientBuilder;
+
+use reqwest::{header::HeaderMap, Client as ReqwestClient};
 
 mod builder;
 
-const USER_AGENT: &str = "revolt-rs (https://github.com/revolt-rs/revolt-rs";
-
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Ratelimit {
     pub limit: u16,
     pub remaining: u16,
@@ -17,12 +14,13 @@ pub struct Ratelimit {
 }
 
 /// Revolt http client.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Client {
     default_headers: Option<HeaderMap>,
     ratelimit: Option<Ratelimit>,
-    proxy: Option<Box<str>>,
+    pub base_url: Option<Box<str>>,
     http_timeout: Duration,
+    pub http: ReqwestClient,
     token: Option<String>,
     is_bot: Option<bool>,
 }
