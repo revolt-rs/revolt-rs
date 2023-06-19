@@ -124,13 +124,14 @@ pub struct BotInformation {
 pub struct User {
     /// Unique Id
     #[serde(rename = "_id")]
-    pub id: Id<UserMarker>,
+    pub id: String,
     /// Username
     pub username: String,
     /// Discriminator
-    pub discriminator: u16,
+    pub discriminator: String,
     /// User's display name
-    pub display_name: String,
+    #[serde(skip_serializing_if = "Option::is_none")] 
+    pub display_name: Option<String>,
     /// Avatar attachment
     #[serde(skip_serializing_if = "Option::is_none")]
     pub avatar: Option<File>,
@@ -149,8 +150,9 @@ pub struct User {
     /// Enum of user flags
     #[serde(skip_serializing_if = "Option::is_none")] 
     pub flags: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     /// Whether this user is privileged
-    pub privileged: bool,
+    pub privileged: Option<bool>,
     /// Bot information
     #[serde(skip_serializing_if = "Option::is_none")]
     pub bot: Option<BotInformation>,
@@ -188,7 +190,7 @@ impl User {
     #[inline]
     #[must_use]
     pub fn tag(&self) -> String {
-        tag(&self.username, self.discriminator)
+        tag(&self.username, &self.discriminator)
     }
     #[inline]
     #[must_use]
@@ -198,7 +200,7 @@ impl User {
     #[inline]
     #[must_use]
     pub fn discriminator(&self) -> String {
-        discriminator_display(self.discriminator)
+        discriminator_display(&self.discriminator)
     }
 }
 
@@ -206,19 +208,19 @@ impl Default for User {
     /// Initializes a [`User`] with default values. Setting the following:
     /// - **[`Self::id`]** to `Id("01EZMT96C3YJ7T2NN996T8VXJE")`
     /// - **[`Self::username`]** to `foo`. 
-    /// - **[`Self::discriminator`]** to `1337`.
+    /// - **[`Self::discriminator`]** to `"1337"`.
     /// - **[`Self::display_name`]** to `foo`.
     /// - **[`Self::privileged`]** to `true`.
     /// - **[`Self::online`]** to `Some(true)`.
     fn default() -> Self {
         Self {
-            id: Id::new("01EZMT96C3YJ7T2NN996T8VXJE"),
+            id: "01EZMT96C3YJ7T2NN996T8VXJE".to_string(),
             username: "foo".to_string(),
             avatar: None,
-            discriminator: 1337,
-            display_name: "foo".to_string(),
+            discriminator: "1337".to_string(),
+            display_name: Some("foo".to_string()),
             badges: None,
-            privileged: true,
+            privileged: Some(true),
             relations: None,
             status: None,
             profile: None,
@@ -230,12 +232,12 @@ impl Default for User {
     }
 }
 
-fn tag(name: &str, discriminator: u16) -> String {
+fn tag(name: &str, discriminator: &str) -> String {
     format!("{}#{}", name, discriminator_display(discriminator))
 }
 
-fn discriminator_display(discriminator: u16) -> String {
-    format!("{discriminator:0>4?}")
+fn discriminator_display(discriminator: &str) -> String {
+    format!("{:0>4}", discriminator)
 }
 
 fn user_mention(id: impl std::fmt::Display) -> String {
@@ -247,8 +249,8 @@ mod tests {
     use super::*;
     #[test]
     pub fn discriminator_display_correctness() {
-        assert_eq!("0000", discriminator_display(0));
-        assert_eq!("0001", discriminator_display(1));
-        assert_eq!("2484", discriminator_display(2484));
+        assert_eq!("0000", discriminator_display("0"));
+        assert_eq!("0001", discriminator_display("1"));
+        assert_eq!("2484", discriminator_display("2484"));
     }
 }

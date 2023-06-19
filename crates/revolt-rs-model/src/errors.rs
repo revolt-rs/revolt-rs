@@ -1,7 +1,9 @@
+use serde::{Deserialize, Serialize};
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 #[serde(untagged)]
-pub enum ErrorType{
+pub enum ErrorType {
     #[serde(rename = "LabelMe")]
     LabelMe,
     #[serde(rename = "VosoUnavailable")]
@@ -92,6 +94,8 @@ pub enum ErrorType{
     InternalError,
     #[serde(rename = "InvalidOperation")]
     InvalidOperation,
+    #[serde(rename = "TooManyRequests")]
+    TooManyRequests,
     #[serde(rename = "InvalidCredentials")]
     InvalidCredentials,
     #[serde(rename = "InvalidProperty")]
