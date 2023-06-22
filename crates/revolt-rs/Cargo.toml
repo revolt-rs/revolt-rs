@@ -8,6 +8,7 @@ keywords = ["revolt", "api", "revoltrs", "revolt-rs"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/revolt-rs/revolt-rs"
+public = true
 
 [dependencies]
 revolt-rs-gateway = { path = "../revolt-rs-gateway", version = "0.0.1" }
