@@ -1,10 +1,12 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct EmbedMedia {
+
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
+pub struct ChannelIcon {
     /// Unique Id
     #[serde(rename = "_id")]
-    pub id: String,
+    pub _id: String,
     /// Tag / bucket this file was uploaded to
     #[serde(rename = "tag")]
     pub tag: String,

@@ -76,7 +76,7 @@ pub struct UserStatus {
     pub presence: Option<Presence>,
 }
 
-#[derive(Debug, PartialEq, Eq, Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, Copy, Clone, Deserialize, Serialize)]
 #[repr(i32)]
 pub enum Badges {
     /// Revolt Developer
