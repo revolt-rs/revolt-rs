@@ -7,7 +7,7 @@ pub enum Errors {
     Serialization(#[from] serde_json::Error),
 
     /// HTTP error
-    #[error("Error while processing an HTTP request: {0}")]
+    #[error("HttpError: {0}")]
     HttpRequest(#[from] reqwest::Error),
 
     /// An error returned from Revolt API

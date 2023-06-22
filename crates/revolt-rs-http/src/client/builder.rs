@@ -61,8 +61,8 @@ impl ClientBuilder {
 
     /// Set the type of header to determine weather the type of token is for a user or bot
     /// used in HTTP requests.
-    pub fn is_bot(mut self, is_bot: Option<bool>) -> Self {
-        self.is_bot = is_bot;
+    pub fn is_bot(mut self, is_bot: bool) -> Self {
+        self.is_bot = Some(is_bot);
         self
     }
 
